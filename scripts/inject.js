@@ -27,7 +27,7 @@ function main(v1, v2) {
     }
 
     function fuckConfig() {
-        var a = getElementByXpath('/html/body/div[2]/div[1]/div[2]/div/script/text()'),
+        var a = getElementByXpath('/html/body/div[2]/div[1]/div[2]/div/script/text()') || getElementByXpath('//*[@id="trailer_player"]/div[2]/div/div[1]/script/text()');
             as = a.data.indexOf('jwconfig'),
             ae = a.data.indexOf('jwplayer(\'hdoplayer\')\.setup(jwconfig)'),
             b = a.data.substring(as, ae),
