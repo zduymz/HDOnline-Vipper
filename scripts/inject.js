@@ -1,21 +1,6 @@
-// chrome.extension.sendMessage({}, function() {
-//     var e = setInterval(function() {
-//         document.onreadystatechange = function() {
-//             if (document.readyState == "complete") {
-//                 clearInterval(e);
-//                 var script = document.createElement("script");
-//                 script.appendChild(document.createTextNode("(" + main + ")();"));
-//                 (document.body || document.head || document.documentElement).appendChild(script);
-//             }
-//         }
-//         // ("complete" === document.readyState) && clearInterval(e)
-//     }, 100);
-// });
-
-
 chrome.extension.sendMessage({}, function(result) {
     var e = setInterval(function() {
-        if ("complete" === document.readyState) {
+        if ("interactive" === document.readyState) {
             clearInterval(e);
 
             //need to do
@@ -96,13 +81,22 @@ function m3u() {
     var xhr = new XMLHttpRequest;
     if (xhr.open("GET", u, !1), xhr.send(null), 200 === xhr.status) {
         var rs = xhr.responseText;
-
         var key = rs.substring(rs.indexOf('<jwplayer:file>') + 15, rs.indexOf('</jwplayer:file>'));
-        console.log(key);
         f = vdecode.decode(key);
-        console.log(f);
+
     }
-    if (xhr.open("GET", f, !1), xhr.send(null), 200 === xhr.status) {
-        console.log("OK");
+    //download file
+    downloadFile(f);
+}
+
+var downloadFile = function downloadURL(url) {
+    var hiddenIFrameID = 'hiddenDownloader',
+        iframe = document.getElementById(hiddenIFrameID);
+    if (iframe === null) {
+        iframe = document.createElement('iframe');
+        iframe.id = hiddenIFrameID;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
     }
+    iframe.src = url;
 }
