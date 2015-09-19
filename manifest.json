@@ -1,0 +1,26 @@
+{
+   "author": "duym",
+   "background": {
+      "scripts": ["scripts/md5.js", "scripts/vdecode.js", "scripts/background.js" ]
+   },
+   "content_scripts": [ {
+      "js": ["scripts/md5.js","scripts/vdecode.js", "scripts/inject.js"],
+      "matches": [ "*://*.hdonline.vn/*" ]
+   } ],
+   "description": "HDOnline Vipper",
+   "homepage_url": "https://udemydl.blogspot.com/",
+   "icons": {
+      "128": "icons/128.png",
+      "24": "icons/24.png",
+      "48": "icons/48.png"
+   },
+   "manifest_version": 2,
+   "name": "HDOnline Vipper",
+   "page_action": {
+      "default_icon": "icons/24.png",
+      "default_title": "Get VLC file"
+   },
+   "permissions": ["downloads", "cookies", "tabs", "*://*.hdonline.vn/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.2"
+}
