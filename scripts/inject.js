@@ -8,9 +8,37 @@ chrome.extension.sendMessage({}, function(result) {
             script.appendChild(document.createTextNode("(" + main + ")(\"" + result.vtoken + "\",\"" + result.vsig + "\");"));
             (document.body || document.head || document.documentElement).appendChild(script);
 
+            removeads();
         }
     }, 10);
 });
+
+//add remove ads
+function removeads() {
+    var floatleft = document.getElementById('floatleft');
+    var floatright = document.getElementById('floatright');
+    var float_left = document.getElementsByClassName('float-left');
+    var float_right = document.getElementsByClassName('float-right');
+    var ads_right = document.getElementsByClassName('ads_right');
+    var socialTitle = document.getElementsByClassName('socialTitle');
+
+    //now remove
+    floatleft.parentNode.removeChild(floatleft);
+    floatright.parentNode.removeChild(floatright);
+
+    for (var i = 0; i < float_left.length; i++) {
+        float_left[i].parentNode.removeChild(float_left[i]);
+    }
+    for (var i = 0; i < float_right.length; i++) {
+        float_right[i].parentNode.removeChild(float_right[i]);
+    }
+    for (var i = 0; i < ads_right.length; i++) {
+        ads_right[i].parentNode.removeChild(ads_right[i]);
+    }
+     for (var i = 0; i < socialTitle.length; i++) {
+        socialTitle[i].parentNode.removeChild(socialTitle[i]);
+    }
+}
 
 function main(v1, v2) {
 
@@ -28,12 +56,12 @@ function main(v1, v2) {
 
     function fuckConfig() {
         var a = getElementByXpath('/html/body/div[2]/div[1]/div[2]/div/script/text()') || getElementByXpath('//*[@id="trailer_player"]/div[2]/div/div[1]/script/text()');
-            as = a.data.indexOf('jwconfig'),
-            ae = a.data.indexOf('jwplayer(\'hdoplayer\')\.setup(jwconfig)'),
-            b = a.data.substring(as, ae),
-            bs = b.indexOf('{'),
-            be = b.lastIndexOf('}') + 1,
-            o = JSON.parse(b.substring(bs, be));
+        as = a.data.indexOf('jwconfig'),
+        ae = a.data.indexOf('jwplayer(\'hdoplayer\')\.setup(jwconfig)'),
+        b = a.data.substring(as, ae),
+        bs = b.indexOf('{'),
+        be = b.lastIndexOf('}') + 1,
+        o = JSON.parse(b.substring(bs, be));
 
         //check vplugin exist
         for (var i in o.plugins) {
@@ -64,6 +92,14 @@ function main(v1, v2) {
         //disable check login - error code "Tai khoang dang dang nhap thiet bi khac - Dang nhap lai "
         if (o.hdonline.user.hasOwnProperty('checklogin')) {
             o.hdonline.user.checklogin = false;
+        }
+
+        //fix 720hd resolution.
+        if (o.hasOwnProperty('vhls_maxlevel')) {
+            o.vhls_maxlevel = 4;
+        }
+        if (o.hasOwnProperty('vhls_maxwidth')) {
+            o.vhls_maxwidth = 1280;
         }
 
         console.log("[+] HDO: Inject VIPPER");
