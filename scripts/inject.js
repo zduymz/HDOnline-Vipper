@@ -2,13 +2,13 @@ chrome.extension.sendMessage({}, function(result) {
     var e = setInterval(function() {
         if ("interactive" === document.readyState) {
             clearInterval(e);
-
+            removeads();
             //need to do
             var script = document.createElement("script");
             script.appendChild(document.createTextNode("(" + main + ")(\"" + result.vtoken + "\",\"" + result.vsig + "\");"));
             (document.body || document.head || document.documentElement).appendChild(script);
 
-            removeads();
+
         }
     }, 10);
 });
@@ -17,26 +17,33 @@ chrome.extension.sendMessage({}, function(result) {
 function removeads() {
     var floatleft = document.getElementById('floatleft');
     var floatright = document.getElementById('floatright');
+    var bswrapper_inhead = document.getElementById('bswrapper_inhead');
     var float_left = document.getElementsByClassName('float-left');
     var float_right = document.getElementsByClassName('float-right');
     var ads_right = document.getElementsByClassName('ads_right');
     var socialTitle = document.getElementsByClassName('socialTitle');
 
+    var ads = document.querySelectorAll('*[id^="ads"]');
+
     //now remove
     floatleft.parentNode.removeChild(floatleft);
     floatright.parentNode.removeChild(floatright);
+    bswrapper_inhead.parentNode.removeChild(bswrapper_inhead);
 
     for (var i = 0; i < float_left.length; i++) {
         float_left[i].parentNode.removeChild(float_left[i]);
     }
-    for (var i = 0; i < float_right.length; i++) {
+    for (i= 0; i < float_right.length; i++) {
         float_right[i].parentNode.removeChild(float_right[i]);
     }
-    for (var i = 0; i < ads_right.length; i++) {
+    for (i = 0; i < ads_right.length; i++) {
         ads_right[i].parentNode.removeChild(ads_right[i]);
     }
-     for (var i = 0; i < socialTitle.length; i++) {
+    for (i = 0; i < socialTitle.length; i++) {
         socialTitle[i].parentNode.removeChild(socialTitle[i]);
+    }
+    for (i = 0; i < ads.length; i++) {
+        ads[i].parentNode.removeChild(ads[i]);
     }
 }
 
@@ -55,10 +62,11 @@ function main(v1, v2) {
     }
 
     function fuckConfig() {
-        var a = getElementByXpath('/html/body/div[2]/div[1]/div[2]/div/script/text()') || getElementByXpath('//*[@id="trailer_player"]/div[2]/div/div[1]/script/text()');
-        as = a.data.indexOf('jwconfig'),
-        ae = a.data.indexOf('jwplayer(\'hdoplayer\')\.setup(jwconfig)'),
-        b = a.data.substring(as, ae),
+        //var a = getElementByXpath('/html/body/div[2]/div[1]/div[2]/div/script/text()') || getElementByXpath('//*[@id="trailer_player"]/div[2]/div/div[1]/script/text()');
+        var a = document.getElementsByClassName('tn-playerdv')[0].getElementsByTagName('script')[0].innerHTML;
+        as = a.indexOf('jwconfig'),
+        ae = a.indexOf('jwplayer(\'hdoplayer\')'),
+        b = a.substring(as, ae),
         bs = b.indexOf('{'),
         be = b.lastIndexOf('}') + 1,
         o = JSON.parse(b.substring(bs, be));
