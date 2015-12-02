@@ -1,8 +1,5 @@
 # HDOnline-Vipper
 Just another stupid stuff from me
 
-NEED TO DO:
-- Do not work with iframe in main page
-- Remove fucking ads
-- Minimize injecting time, now it's so long.
-- Improve stupid code.
+## Demo
+https://www.youtube.com/watch?v=u1G8_QUrwqM
